@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186479012}
   m_LocalRotation: {x: -0.008720086, y: 0.00012212305, z: 0.014002701, w: 0.9998639}
-  m_LocalPosition: {x: 0.11, y: 0.14, z: 0}
+  m_LocalPosition: {x: 0, y: 0.14, z: 0}
   m_LocalScale: {x: 0.76, y: 0.91, z: 1}
   m_Children:
   - {fileID: 354375637}
@@ -308,7 +308,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354375636}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.060000002, y: 0.20929825, z: -3.0723276}
   m_LocalScale: {x: 0.36363634, y: 0.35087723, z: 1}
   m_Children: []
@@ -719,7 +719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65546c3469eba614a88b07eb0edf8f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   bodyTank: {fileID: 1149882996}
   gun: {fileID: 2004743362}
   gunBehind: {fileID: 228593298}
@@ -786,9 +786,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1356170173}
   - component: {fileID: 1356170172}
-  - component: {fileID: 1356170174}
   - component: {fileID: 1356170175}
   - component: {fileID: 1356170176}
+  - component: {fileID: 1356170174}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -873,11 +873,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e872f95dd2b1c54b922fdc03e924b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 1
   gun: {fileID: 548469733}
   transhoot: {fileID: 867200164}
   bullet: {fileID: 896991178577696527, guid: d1cb1062a399fc742a60d64a61dd7e36, type: 3}
   Player: {fileID: 1149882996}
+  timedelay: 0
+  timeBullet: 3
+  count: 0
+  USung: {fileID: 3582640163936550799, guid: 76508394820888c43bbbe745092900eb, type: 3}
 --- !u!61 &1356170175
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1023,7 +1027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1672537187
 Transform:
   m_ObjectHideFlags: 0
@@ -1211,7 +1215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004743362}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.001, y: 0.102, z: 0}
+  m_LocalPosition: {x: 0.001, y: -0.03, z: 0}
   m_LocalScale: {x: 0.55, y: 0.57, z: 1}
   m_Children:
   - {fileID: 186479013}
