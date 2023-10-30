@@ -7,6 +7,12 @@ TagManager:
   - dan
   - danEnemy
   - danPlayer
+  - item
+  - item2
+  - item3
+  - item5
+  - item6
+  - item4
   layers:
   - Default
   - TransparentFX

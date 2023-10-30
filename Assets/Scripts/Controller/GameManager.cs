@@ -10,43 +10,51 @@ public class GameManager : MonoBehaviour
     public EnemyController tankEnemy;
     public int scorePlayer;
     public Text scoreTxt;
-    public GameObject Enemy;
-    public int Count;
+    private bool spawned = false;
+
+   
+
     private void Awake()
     {
         if (instance == null) instance = this;
+        this.RegisterListener(EventID.EnemyDestroy, (sender, param) => // sender: người gửi . param gửi kèm đến cái gì
+            {
+            addScore();
+            });
+        
     }
     void Update()
     {
         scoreTxt.text = "score : " + scorePlayer.ToString();
-        if (Count <2)
-        {
-            add();
-        }
 
-    }
-    public void Create(Vector3 createPos)
-    {
-        Instantiate(Enemy, createPos, transform.rotation);
+
+
+        //if (scorePlayer % 100 == 0 && scorePlayer > 0 && spawned == false)
+        //{
+        //    Spawn2Enemy();
+        //    spawned = true;
+        //}
     }
     public void addScore()
     {
         scorePlayer += 10;
+
+        //if (spawned == true)
+        //{
+        //    spawned = false;
+        //}
     }
-    public void add()
-    {
-        if (scorePlayer % 100 == 0 && scorePlayer > 0  )
-        {
+    //public void Spawn2Enemy()
+    //{
 
-            for (int i = 0; i < 2; i++)
-            {
-                Instantiate(Enemy, transform.position, transform.rotation);
-                Count++;
-            }
-        
-        }
+    //    for (int i = 0; i < 2; i++)
+    //    {
+    //        var x = Random.Range(0, 10);
+    //        var y = Random.Range(0, 10);
+    //        var creatPos = new Vector3(x, y, 0);
+    //    }
 
-    }
+    //}
 
-    
+ 
 }

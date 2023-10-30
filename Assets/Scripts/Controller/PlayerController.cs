@@ -1,22 +1,65 @@
-﻿using System.Collections;
+﻿using Core.Pool;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : TankController
 {
-     public static PlayerController instance;   
-      int count = 0;
+    public static PlayerController instance;
+    public Slider slider_hp;
+    public Slider slider_Ex;
+
+    //ex player
+    private int ExMax = 2;
+    private int ExPlayer = 0;
+
+    // level
+    public Text ExText;
+    public int level;
+    // item 
+    public float TimeItem1;
+    public float TimeItem2;
+    public float TimeItem4;
+    public float TimeItem5;
+    public float TimeItem6;
+    public GameObject gun2;
+    public float hpMax;
+    private bool item1 = false;
+    private bool item2 = false;
+    private bool item3 = false;
+    private bool item4 = false;
+    private bool item5 = false;
+    public bool item6 = false;
+    public GameObject transhot3;
+    public GameObject transhot4;
+    public GameObject USUngsau;
+    public GameObject transhot5;
     private void Awake()
     {
         if (instance == null) instance = this;
+        this.RegisterListener(EventID.EnemyDestroy, (sender, param) =>
+        {
+            congEx();
+        });
+
+
+        slider_hp.maxValue = hp;
+        slider_Ex.value = ExPlayer;
+    }
+    private void Start()
+    {
+        hpMax = hp;
     }
     private void Update()
     {
+
+        ExText.text = "level:" + level.ToString();
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, vertical);
         Move(direction);
-
         var position = Input.mousePosition;
         Vector3 gunDirectionmoba = new Vector3(
              position.x - Screen.width / 2,
@@ -25,19 +68,158 @@ public class PlayerController : TankController
         RotateGun(gunDirectionmoba);
         if (Input.GetMouseButtonDown(0))
         {
-            Shoot();
+            CreateBullet();
+            if (item1 == true)
+            {
+                SmartPool.Instance.Spawn(bullet.gameObject, transhoot2.transform.position, transhoot2.rotation);
+            }
+            if (item6 == true)
+            {
+                SmartPool.Instance.Spawn(bullet.gameObject, transhot3.transform.position, transhot3.transform.rotation);
+                SmartPool.Instance.Spawn(bullet.gameObject, transhot4.transform.position, transhot4.transform.rotation);
+            }
+            if (item4 == true)
+            {
+                SmartPool.Instance.Spawn(bullet.gameObject, transhot5.transform.position, transhot5.transform.rotation);
+            }
         }
-        if (count == 10)
+
+        slider_hp.value = hp;
+        if (hp <= 0)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
+        //kinh nghiệm
+        if (ExPlayer >= ExMax)
+        {
+            Conglevel();
+            ExPlayer = 0;
+        }
+        slider_Ex.value = ExPlayer;
+        // trừ dần thời gian ăn item 
+        CheckTimeItem();
     }
-   
+
     void OnTriggerEnter2D(Collider2D collision)
     {
+        //item
+        if (collision.gameObject.tag == "item")
+        {
+            gun2.SetActive(true);
+            item1 = true;
+        }
+        //item2
+        if (collision.gameObject.tag == "item2")
+        {
+            speed *= 2;
+            item2 = true;
+            Debug.Log("speed:" + speed);
+        }
+        //item3
+        if (collision.gameObject.tag == "item3")
+        {
+            hp = hpMax;
+            item3 = true;
+        }
+        //item4
+        if (collision.gameObject.tag == "item4")
+        {
+            USUngsau.SetActive(true);
+            item4 = true;
+        }
+        //item5
+        if (collision.gameObject.tag == "item5")
+        {
+            Debug.Log("va cham ");
+            item5 = true;
+            this.gameObject.transform.localScale += new Vector3(3, 3, 0);
+        }
+        //item6
+        if (collision.gameObject.tag == "item6")
+        {
+            item6 = true;
+        }
+        //dame
         if (collision.gameObject.tag == "danEnemy")
         {
-            count++;
+            var dame = collision.gameObject.GetComponent<BulletController>().damage;
+            CalculateHP(-dame);
+        }
+    }
+
+    public void congEx()
+    {
+        ExPlayer += 1;
+    }
+    public void Conglevel()
+    {
+        level += 1;
+        bullet.Bonusdame();
+    }
+    public override void CalculateHP(float value)
+    {
+        base.CalculateHP(value);
+        if (hp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    public void CheckTimeItem()
+    {
+        if (item1 == true)
+        {
+            TimeItem1 -= Time.deltaTime;
+            if (TimeItem1 <= 0)
+            {
+                item1 = false;
+                gun2.SetActive(false);
+                TimeItem1 = 10;
+            }
+        }
+        if (item2 == true)
+        {
+            TimeItem2 -= Time.deltaTime;
+            if (TimeItem2 <= 0)
+            {
+                TimeItem2 = 10;
+                item2 = false;
+                speed /= 2;
+            }
+        }
+        if (item3 == true)
+        {
+            item3 = false;
+        }
+        if (item4 == true)
+        {
+            TimeItem4 -= Time.deltaTime;
+            if (TimeItem4 <= 0)
+            {
+                TimeItem4 = 10;
+                USUngsau.SetActive(false);
+                item4 = false;
+            }
+        }
+
+        if (item5 == true)
+        {
+            TimeItem5 -= Time.deltaTime;
+            if (TimeItem5 <= 0)
+            {
+                TimeItem5 = 10;
+                this.gameObject.transform.localScale -= new Vector3(3, 3, 0);
+                item5 = false;
+            }
+        }
+        if (item6 == true)
+        {
+            TimeItem6 -= Time.deltaTime;
+            if (TimeItem6 <= 0)
+            {
+                item6 = false;
+                TimeItem6 = 10;
+
+            }
         }
     }
 }
