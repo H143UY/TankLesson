@@ -9,7 +9,7 @@ public class WaveController : MonoBehaviour
     public int Count;
     public int SpawnEnemy;
     public int CountWave;
-    public EnemyController EnemyController;
+    public EnemyController enemyController;
     private void Awake()
     {
         this.RegisterListener(EventID.EnemyDestroy, (sender, param) =>
@@ -35,8 +35,6 @@ public class WaveController : MonoBehaviour
         {
             this.PostEvent(EventID.EndWave);   
             CountWave = 0;
-            //EnemyController.Uplevel();
-            Debug.Log("aaaaaa");
         }
     }
     public void SpawmEnemy()
@@ -46,8 +44,7 @@ public class WaveController : MonoBehaviour
             float RandomX = Random.Range(0, 10);
             float RandomY = Random.Range(0, 10);
             randomPosition = new Vector3(RandomX, RandomY);
-
-            var e = SmartPool.Instance.Spawn(enemy.gameObject, randomPosition, Quaternion.identity);
+            var e = SmartPool.Instance.Spawn(enemy.gameObject, randomPosition, transform.rotation);
             e.transform.localScale = new Vector3(2, 2, 1);           
         }
         

@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3962897242652739125}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,8 +108,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3131812284217545740}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.15, y: 0.1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.6051265, w: 0.79612935}
+  m_LocalPosition: {x: 256.32993, y: 175.53993, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children:
   - {fileID: 762562105057482232}
@@ -178,14 +178,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e4cf7a2797fc604d9c34ee43c291ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 0.1
   bodyTank: {fileID: 8303256705150453549}
   gun: {fileID: 8303256705150453549}
   gun2: {fileID: 0}
   bullet: {fileID: 7281668804185700956, guid: fd20e209440875a468894db47a7065f0, type: 3}
   transhoot: {fileID: 4384984887768160254}
   transhoot2: {fileID: 0}
-  hp: 20
+  hp: 200
   randomItem:
   - {fileID: 6206022739372816110, guid: dffa0b05c0fb44d4faf75692b3d21e60, type: 3}
   - {fileID: 3637581080642182649, guid: 7ca211168ff493d4e8b5edd2e9b88534, type: 3}
@@ -195,6 +195,8 @@ MonoBehaviour:
   - {fileID: 9007716518589024728, guid: add3ce7c5942121418a86a206ed016f6, type: 3}
   time: 0
   percent: 90
+  TimeThunder: 0
+  ThunderBullet: 0
 --- !u!50 &7445606578901933803
 Rigidbody2D:
   serializedVersion: 4

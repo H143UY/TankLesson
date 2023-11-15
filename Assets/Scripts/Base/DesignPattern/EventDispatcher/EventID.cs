@@ -4,4 +4,5 @@ public enum EventID
     MaxExperience,
     WaveSpawn,
     EndWave,
+    ThunderEnemy
 }

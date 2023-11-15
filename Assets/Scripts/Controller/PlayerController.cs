@@ -12,26 +12,26 @@ public class PlayerController : TankController
     public Slider slider_Ex;
 
     //ex player
-    private int ExMax = 2;
+    private int ExMax = 5;
     private int ExPlayer = 0;
 
     // level
     public Text ExText;
-    public int level;
+    private int level;
     // item 
-    public float TimeItem1;
-    public float TimeItem2;
-    public float TimeItem4;
-    public float TimeItem5;
-    public float TimeItem6;
-    public GameObject gun2;
-    public float hpMax;
+    private float TimeItem1;
+    private float TimeItem2;
+    private float TimeItem4;
+    private float TimeItem5;
+    private float TimeItem6;
+    private GameObject gun2;
+    private float hpMax;
     private bool item1 = false;
     private bool item2 = false;
     private bool item3 = false;
     private bool item4 = false;
     private bool item5 = false;
-    public bool item6 = false;
+    private bool item6 = false;
     public GameObject transhot3;
     public GameObject transhot4;
     public GameObject USUngsau;
@@ -42,11 +42,12 @@ public class PlayerController : TankController
         this.RegisterListener(EventID.EnemyDestroy, (sender, param) =>
         {
             congEx();
-        });
-
-
+        });      
         slider_hp.maxValue = hp;
+        slider_Ex.maxValue = ExMax;
         slider_Ex.value = ExPlayer;
+        level = DataAccountPlayer.PlayerInformation.capdo;
+        ExPlayer = DataAccountPlayer.PlayerInformation.kinhnghiem;
     }
     private void Start()
     {
@@ -54,8 +55,7 @@ public class PlayerController : TankController
     }
     private void Update()
     {
-
-        ExText.text = "level:" + level.ToString();
+        ExText.text = "level:"+level;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, vertical);
@@ -71,7 +71,11 @@ public class PlayerController : TankController
             CreateBullet();
             if (item1 == true)
             {
-                SmartPool.Instance.Spawn(bullet.gameObject, transhoot2.transform.position, transhoot2.rotation);
+                if (transhoot2)
+                {
+                    SmartPool.Instance.Spawn(bullet.gameObject, transhoot2.transform.position, transhoot2.rotation);
+                }
+                
             }
             if (item6 == true)
             {
@@ -85,18 +89,15 @@ public class PlayerController : TankController
         }
 
         slider_hp.value = hp;
-        if (hp <= 0)
-        {
-            Destroy(this.gameObject);
-        }
         //kinh nghiệm
         if (ExPlayer >= ExMax)
         {
+            GameManager.instance.scorePlayer = 0;
             Conglevel();
             ExPlayer = 0;
         }
         slider_Ex.value = ExPlayer;
-        // trừ dần thời gian ăn item 
+        // trừ dần thời gian ăn item 5 d
         CheckTimeItem();
     }
 
@@ -130,7 +131,6 @@ public class PlayerController : TankController
         //item5
         if (collision.gameObject.tag == "item5")
         {
-            Debug.Log("va cham ");
             item5 = true;
             this.gameObject.transform.localScale += new Vector3(3, 3, 0);
         }
@@ -154,7 +154,6 @@ public class PlayerController : TankController
     public void Conglevel()
     {
         level += 1;
-        bullet.Bonusdame();
     }
     public override void CalculateHP(float value)
     {
@@ -162,6 +161,9 @@ public class PlayerController : TankController
         if (hp <= 0)
         {
             Destroy(this.gameObject);
+            DataAccountPlayer.PlayerInformation.ChangeScore(GameManager.instance.scorePlayer);
+            DataAccountPlayer.PlayerInformation.SaveLevel(level);
+            DataAccountPlayer.PlayerInformation.SaveEX(ExPlayer);
         }
     }
     public void CheckTimeItem()

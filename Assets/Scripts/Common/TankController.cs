@@ -23,7 +23,12 @@ public class TankController : MoveController
     protected void RotateGun(Vector3 direction)
     {
         gun.up = direction;
-        gun2.up = direction;
+
+        if (gun2 != null)
+        {
+            gun2.up = direction;
+        }
+       
     }
 
     public void CreateBullet()

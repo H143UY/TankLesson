@@ -10,51 +10,29 @@ public class GameManager : MonoBehaviour
     public EnemyController tankEnemy;
     public int scorePlayer;
     public Text scoreTxt;
+    public Text highscore;
     private bool spawned = false;
 
    
 
     private void Awake()
     {
-        if (instance == null) instance = this;
+        if (instance == null) 
+            instance = this;
         this.RegisterListener(EventID.EnemyDestroy, (sender, param) => // sender: người gửi . param gửi kèm đến cái gì
             {
-            addScore();
+                addScore();
             });
-        
+
+        highscore.text = DataAccountPlayer.PlayerInformation.score.ToString();
+
     }
     void Update()
     {
         scoreTxt.text = "score : " + scorePlayer.ToString();
-
-
-
-        //if (scorePlayer % 100 == 0 && scorePlayer > 0 && spawned == false)
-        //{
-        //    Spawn2Enemy();
-        //    spawned = true;
-        //}
     }
     public void addScore()
     {
         scorePlayer += 10;
-
-        //if (spawned == true)
-        //{
-        //    spawned = false;
-        //}
     }
-    //public void Spawn2Enemy()
-    //{
-
-    //    for (int i = 0; i < 2; i++)
-    //    {
-    //        var x = Random.Range(0, 10);
-    //        var y = Random.Range(0, 10);
-    //        var creatPos = new Vector3(x, y, 0);
-    //    }
-
-    //}
-
- 
 }
